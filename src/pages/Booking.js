@@ -1,18 +1,69 @@
 import { useState } from 'react';
 
-const timeSlots = [
-  '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM',
-  '11:00 AM', '11:30 AM', '2:00 PM', '2:30 PM',
-  '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'
-];
+const timeSlots = ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'];
 
-const doctor = {
-  name: "Dr. Priya Sharma",
-  spec: "Panchakarma Specialist",
-  fee: "₹500",
-  rating: 4.9,
-  emoji: "👩‍⚕️"
-};
+const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+  .booking-page { min-height: 100vh; background: #0A0A0A; font-family: 'Poppins', sans-serif; padding: 60px; }
+  .booking-header { margin-bottom: 48px; animation: slideUp 0.6s ease-out; }
+  .back-btn { color: rgba(255,255,255,0.4); font-size: 14px; cursor: pointer; margin-bottom: 24px; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s; background: none; border: none; font-family: 'Poppins', sans-serif; }
+  .back-btn:hover { color: white; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; color: #FDF6EC; margin-bottom: 8px; }
+  .page-sub { color: rgba(255,255,255,0.35); font-size: 16px; }
+
+  .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1000px; }
+
+  .booking-card { background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 28px; margin-bottom: 20px; animation: slideUp 0.6s ease-out; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #FDF6EC; margin-bottom: 20px; }
+
+  .doctor-preview { display: flex; gap: 16px; align-items: center; }
+  .doc-avatar { font-size: 52px; }
+  .doc-name { font-family: 'Playfair Display', serif; font-size: 18px; color: #FDF6EC; margin-bottom: 4px; }
+  .doc-spec { color: #C9973A; font-size: 13px; margin-bottom: 4px; }
+  .doc-rating { color: rgba(255,255,255,0.4); font-size: 13px; }
+
+  .consult-types { display: flex; gap: 12px; }
+  .consult-type { flex: 1; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: transparent; color: rgba(255,255,255,0.5); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; }
+  .consult-type.active { background: rgba(232,101,10,0.1); border-color: #E8650A; color: #E8650A; }
+
+  .symptoms-input { width: 100%; padding: 14px; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; font-size: 14px; color: #FDF6EC; outline: none; resize: none; font-family: 'Poppins', sans-serif; line-height: 1.6; }
+  .symptoms-input:focus { border-color: #E8650A; }
+  .symptoms-input::placeholder { color: rgba(255,255,255,0.2); }
+
+  .date-input { width: 100%; padding: 14px 16px; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; font-size: 15px; color: #FDF6EC; outline: none; font-family: 'Poppins', sans-serif; }
+  .date-input:focus { border-color: #E8650A; }
+
+  .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .time-slot { padding: 12px 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: transparent; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; }
+  .time-slot.active { background: rgba(232,101,10,0.1); border-color: #E8650A; color: #E8650A; }
+  .time-slot:hover:not(.active) { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); }
+
+  .confirm-btn { width: 100%; padding: 18px; background: #E8650A; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; margin-top: 8px; }
+  .confirm-btn:hover { background: #D05508; transform: translateY(-2px); box-shadow: 0 15px 40px rgba(232,101,10,0.3); }
+
+  .success-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.3s; backdrop-filter: blur(10px); }
+  .success-card { background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 60px 48px; text-align: center; max-width: 440px; width: 90%; animation: slideUp 0.5s ease-out; }
+  .success-icon { font-size: 80px; margin-bottom: 24px; display: block; animation: pulse 2s ease-in-out infinite; }
+  .success-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #FDF6EC; margin-bottom: 12px; }
+  .success-desc { color: rgba(255,255,255,0.4); font-size: 15px; line-height: 1.7; margin-bottom: 32px; }
+  .success-details { background: #0A0A0A; border-radius: 14px; padding: 20px; margin-bottom: 28px; text-align: left; }
+  .success-detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .success-detail-row:last-child { border-bottom: none; }
+  .success-detail-label { color: rgba(255,255,255,0.3); font-size: 13px; }
+  .success-detail-value { color: #FDF6EC; font-size: 13px; font-weight: 600; }
+  .success-btn { width: 100%; padding: 16px; background: #E8650A; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; }
+
+  @media (max-width: 768px) {
+    .booking-page { padding: 32px 24px; }
+    .page-title { font-size: 36px; }
+    .booking-grid { grid-template-columns: 1fr; }
+  }
+`;
 
 function Booking() {
   const [selectedDate, setSelectedDate] = useState('');
@@ -21,248 +72,88 @@ function Booking() {
   const [symptoms, setSymptoms] = useState('');
   const [booked, setBooked] = useState(false);
 
-  const handleBooking = () => {
-    if (!selectedDate || !selectedSlot) {
-      alert('Please select a date and time slot!');
-      return;
-    }
-    setBooked(true);
-  };
-
-  if (booked) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        background: '#1A3C2E',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'Inter, sans-serif'
-      }}>
-        <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '60px 40px',
-          textAlign: 'center',
-          maxWidth: '420px',
-          width: '100%'
-        }}>
-          <div style={{ fontSize: '72px', marginBottom: '24px' }}>✅</div>
-          <h2 style={{ fontFamily: 'serif', fontSize: '28px', color: '#1A3C2E', marginBottom: '12px' }}>
-            Booking Confirmed!
-          </h2>
-          <p style={{ color: '#6B7280', fontSize: '15px', marginBottom: '24px' }}>
-            Your appointment with <strong>{doctor.name}</strong> is confirmed for <strong>{selectedDate}</strong> at <strong>{selectedSlot}</strong>.
-          </p>
-          <div style={{
-            background: '#FDF6EC',
-            borderRadius: '12px',
-            padding: '20px',
-            marginBottom: '28px',
-            textAlign: 'left'
-          }}>
-            {[
-              { label: 'Doctor', value: doctor.name },
-              { label: 'Date', value: selectedDate },
-              { label: 'Time', value: selectedSlot },
-              { label: 'Type', value: consultType === 'video' ? '📹 Video Call' : '📞 Audio Call' },
-              { label: 'Fee', value: doctor.fee },
-            ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ color: '#9CA3AF', fontSize: '13px' }}>{item.label}</span>
-                <span style={{ color: '#1A1A1A', fontSize: '13px', fontWeight: '600' }}>{item.value}</span>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => setBooked(false)}
-            style={{
-              width: '100%',
-              padding: '14px',
-              background: '#E8650A',
-              color: 'white',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '15px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}>
-            Back to Booking
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ minHeight: '100vh', background: '#FDF6EC', fontFamily: 'Inter, sans-serif' }}>
+    <div className="booking-page">
+      <style>{CSS}</style>
 
-      {/* HEADER */}
-      <div style={{ background: '#1A3C2E', padding: '40px 60px' }}>
-        <h1 style={{ fontFamily: 'serif', color: '#FDF6EC', fontSize: '32px', marginBottom: '4px' }}>
-          Book Appointment
-        </h1>
-        <p style={{ color: 'rgba(253,246,236,0.6)', fontSize: '15px' }}>
-          Schedule your consultation in minutes
-        </p>
+      {booked && (
+        <div className="success-overlay">
+          <div className="success-card">
+            <span className="success-icon">✅</span>
+            <div className="success-title">Booking Confirmed!</div>
+            <p className="success-desc">Your appointment has been successfully booked.</p>
+            <div className="success-details">
+              {[
+                { label: 'Doctor', value: 'Dr. Priya Sharma' },
+                { label: 'Date', value: selectedDate || 'Not selected' },
+                { label: 'Time', value: selectedSlot || 'Not selected' },
+                { label: 'Type', value: consultType === 'video' ? '📹 Video Call' : '📞 Audio Call' },
+                { label: 'Fee', value: '₹500' },
+              ].map((item, i) => (
+                <div key={i} className="success-detail-row">
+                  <span className="success-detail-label">{item.label}</span>
+                  <span className="success-detail-value">{item.value}</span>
+                </div>
+              ))}
+            </div>
+            <button className="success-btn" onClick={() => setBooked(false)}>Done</button>
+          </div>
+        </div>
+      )}
+
+      <div className="booking-header">
+        <button className="back-btn" onClick={() => window.location.href='/doctors'}>← Back to Doctors</button>
+        <div className="page-title">Book Appointment</div>
+        <div className="page-sub">Schedule your consultation in minutes</div>
       </div>
 
-      <div style={{ padding: '40px 60px', maxWidth: '900px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-
-          {/* LEFT SIDE */}
-          <div>
-            {/* Doctor Card */}
-            <div style={{
-              background: 'white',
-              borderRadius: '16px',
-              padding: '24px',
-              marginBottom: '24px',
-              border: '1px solid #E5E7EB',
-              display: 'flex',
-              gap: '16px',
-              alignItems: 'center'
-            }}>
-              <div style={{ fontSize: '52px' }}>{doctor.emoji}</div>
+      <div className="booking-grid">
+        <div>
+          <div className="booking-card">
+            <div className="card-title">Your Doctor</div>
+            <div className="doctor-preview">
+              <div className="doc-avatar">👩‍⚕️</div>
               <div>
-                <h3 style={{ fontFamily: 'serif', fontSize: '18px', color: '#1A3C2E', marginBottom: '4px' }}>
-                  {doctor.name}
-                </h3>
-                <p style={{ color: '#E8650A', fontSize: '13px', fontWeight: '500', marginBottom: '4px' }}>
-                  {doctor.spec}
-                </p>
-                <p style={{ color: '#6B7280', fontSize: '13px' }}>
-                  ⭐ {doctor.rating} • Consultation Fee: {doctor.fee}
-                </p>
+                <div className="doc-name">Dr. Priya Sharma</div>
+                <div className="doc-spec">Panchakarma Specialist</div>
+                <div className="doc-rating">⭐ 4.9 • ₹500 consultation fee</div>
               </div>
-            </div>
-
-            {/* Consultation Type */}
-            <div style={{ background: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '1px solid #E5E7EB' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A1A', marginBottom: '16px' }}>
-                Consultation Type
-              </h4>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                {[
-                  { value: 'video', label: '📹 Video Call' },
-                  { value: 'audio', label: '📞 Audio Call' },
-                ].map(type => (
-                  <button
-                    key={type.value}
-                    onClick={() => setConsultType(type.value)}
-                    style={{
-                      flex: 1,
-                      padding: '12px',
-                      borderRadius: '10px',
-                      border: '1.5px solid',
-                      borderColor: consultType === type.value ? '#1A3C2E' : '#E5E7EB',
-                      background: consultType === type.value ? '#1A3C2E' : 'white',
-                      color: consultType === type.value ? 'white' : '#6B7280',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}>
-                    {type.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Symptoms */}
-            <div style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #E5E7EB' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A1A', marginBottom: '12px' }}>
-                Describe Your Symptoms
-              </h4>
-              <textarea
-                placeholder="Tell the doctor about your health concerns..."
-                value={symptoms}
-                onChange={e => setSymptoms(e.target.value)}
-                rows={4}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1.5px solid #E5E7EB',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  outline: 'none',
-                  resize: 'none',
-                  fontFamily: 'Inter, sans-serif'
-                }}
-              />
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div>
-            {/* Date Picker */}
-            <div style={{ background: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '1px solid #E5E7EB' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A1A', marginBottom: '12px' }}>
-                Select Date
-              </h4>
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={e => setSelectedDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1.5px solid #E5E7EB',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  outline: 'none',
-                  color: '#1A1A1A'
-                }}
-              />
+          <div className="booking-card">
+            <div className="card-title">Consultation Type</div>
+            <div className="consult-types">
+              {[{ value: 'video', label: '📹 Video Call' }, { value: 'audio', label: '📞 Audio Call' }].map(type => (
+                <button key={type.value} className={`consult-type ${consultType === type.value ? 'active' : ''}`} onClick={() => setConsultType(type.value)}>{type.label}</button>
+              ))}
             </div>
-
-            {/* Time Slots */}
-            <div style={{ background: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '1px solid #E5E7EB' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A1A', marginBottom: '16px' }}>
-                Select Time Slot
-              </h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                {timeSlots.map(slot => (
-                  <button
-                    key={slot}
-                    onClick={() => setSelectedSlot(slot)}
-                    style={{
-                      padding: '10px 6px',
-                      borderRadius: '8px',
-                      border: '1.5px solid',
-                      borderColor: selectedSlot === slot ? '#E8650A' : '#E5E7EB',
-                      background: selectedSlot === slot ? '#E8650A' : 'white',
-                      color: selectedSlot === slot ? 'white' : '#374151',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}>
-                    {slot}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Confirm Button */}
-            <button
-              onClick={handleBooking}
-              style={{
-                width: '100%',
-                padding: '16px',
-                background: '#E8650A',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}>
-              Confirm Booking — {doctor.fee}
-            </button>
           </div>
+
+          <div className="booking-card">
+            <div className="card-title">Describe Symptoms</div>
+            <textarea className="symptoms-input" rows={5} placeholder="Tell the doctor about your health concerns, symptoms, and what you'd like to discuss..." value={symptoms} onChange={e => setSymptoms(e.target.value)} />
+          </div>
+        </div>
+
+        <div>
+          <div className="booking-card">
+            <div className="card-title">Select Date</div>
+            <input className="date-input" type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)} min={new Date().toISOString().split('T')[0]} />
+          </div>
+
+          <div className="booking-card">
+            <div className="card-title">Select Time Slot</div>
+            <div className="time-grid">
+              {timeSlots.map(slot => (
+                <button key={slot} className={`time-slot ${selectedSlot === slot ? 'active' : ''}`} onClick={() => setSelectedSlot(slot)}>{slot}</button>
+              ))}
+            </div>
+          </div>
+
+          <button className="confirm-btn" onClick={() => { if (!selectedDate || !selectedSlot) { alert('Please select date and time!'); return; } setBooked(true); }}>
+            Confirm Booking — ₹500
+          </button>
         </div>
       </div>
     </div>
