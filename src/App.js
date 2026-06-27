@@ -1,3 +1,9 @@
+import Wellness from './pages/Wellness';
+import MedTourism from './pages/MedTourism';
+import Recreation from './pages/Recreation';
+import SymptomChecker from './pages/SymptomChecker';
+import DietPlan from './pages/DietPlan';
+import BMICalculator from './pages/BMICalculator';
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
@@ -415,6 +421,12 @@ function App() {
       <Route path="/yoga-session" element={<YogaSession/>}/>
       <Route path="/yoga-progress" element={<YogaProgress/>}/>
       <Route path="/medicine-reminder" element={<MedicineReminder/>}/>
+      <Route path="/wellness" element={<Wellness/>}/>
+      <Route path="/medical-tourism" element={<MedTourism/>}/>
+      <Route path="/recreation" element={<Recreation/>}/>
+      <Route path="/symptom-checker" element={<SymptomChecker/>}/>
+      <Route path="/diet-plan" element={<DietPlan/>}/>
+      <Route path="/bmi-calculator" element={<BMICalculator/>}/>
     </Routes>
   );
 }
