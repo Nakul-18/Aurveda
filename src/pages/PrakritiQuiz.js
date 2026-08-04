@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const questions = [
   { q: "What is your body frame?", options: [{ text: "Thin & Light", dosha: "vata" }, { text: "Medium & Muscular", dosha: "pitta" }, { text: "Heavy & Sturdy", dosha: "kapha" }] },
@@ -108,6 +109,7 @@ const CSS = `
 `;
 
 function PrakritiQuiz() {
+  const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [scores, setScores] = useState({ vata: 0, pitta: 0, kapha: 0 });
   const [selected, setSelected] = useState(null);
@@ -204,7 +206,7 @@ function PrakritiQuiz() {
           )}
           {saveStatus === 'noauth' && (
             <div className="save-status save-error">
-              🔐 Login to save your result! <span style={{cursor:'pointer',textDecoration:'underline',marginLeft:'8px'}} onClick={()=>window.location.href='/login'}>Login →</span>
+              🔐 Login to save your result! <span style={{cursor:'pointer',textDecoration:'underline',marginLeft:'8px'}} onClick={()=>navigate('/login')}>Login →</span>
             </div>
           )}
         </div>
@@ -258,8 +260,8 @@ function PrakritiQuiz() {
           </div>
 
           <div className="result-actions">
-            <button className="action-btn action-primary" onClick={() => window.location.href='/vaidya'}>📅 Book a Vaidya</button>
-            <button className="action-btn action-primary" style={{background:'#1A3C2E'}} onClick={() => window.location.href='/dashboard'}>📊 View Dashboard</button>
+            <button className="action-btn action-primary" onClick={() => navigate('/vaidya')}>📅 Book a Vaidya</button>
+            <button className="action-btn action-primary" style={{background:'#1A3C2E'}} onClick={() => navigate('/dashboard')}>📊 View Dashboard</button>
             <button className="action-btn action-secondary" onClick={retake}>🔄 Retake Quiz</button>
           </div>
         </div>
@@ -274,7 +276,7 @@ function PrakritiQuiz() {
       <style>{CSS}</style>
       <div className="quiz-wrap">
         <div className="quiz-header">
-          <div className="quiz-logo" onClick={() => window.location.href='/'}>Ārogya<span>Med</span></div>
+          <div className="quiz-logo" onClick={() => navigate('/')}>Ārogya<span>Med</span></div>
           <h1 className="quiz-title">Discover Your<span>Prakriti</span></h1>
           <p className="quiz-sub">10 questions to find your Ayurvedic constitution</p>
         </div>
