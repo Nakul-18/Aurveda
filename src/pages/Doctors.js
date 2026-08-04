@@ -97,13 +97,13 @@ function Doctors() {
   const [selectedSpec, setSelectedSpec] = useState('All');
   const [availableOnly, setAvailableOnly] = useState(false);
 
-  const fetchDoctors = async () => {
+  const fetchDoctors = async (spec, avail) => {
     setLoading(true);
     setError(null);
     try {
       let url = `${API}/doctors?`;
-      if (selectedSpec !== 'All') url += `specialization=${selectedSpec}&`;
-      if (availableOnly) url += `available=true&`;
+      if (spec !== 'All') url += `specialization=${spec}&`;
+      if (avail) url += `available=true&`;
       const res = await fetch(url);
       const data = await res.json();
       if (data.success) {
@@ -117,7 +117,7 @@ function Doctors() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchDoctors(); }, [selectedSpec, availableOnly]);
+  useEffect(() => { fetchDoctors(selectedSpec, availableOnly); }, [selectedSpec, availableOnly]);
 
   const filtered = doctors.filter(d =>
     d.name.toLowerCase().includes(search.toLowerCase()) ||

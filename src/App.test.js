@@ -8,6 +8,7 @@ jest.mock('react-router-dom', () => ({
 
 test('renders app header without crashing', () => {
   render(<App />);
-  // Adjust this according to the actual app content when loaded (SplashScreen or Home).
-  // E.g. we can just check it doesn't crash since it's just a default test.
+  // Check for the splash screen that is rendered initially based on App.js
+  const splashScreenElement = screen.getByText(/Ārogya/i);
+  expect(splashScreenElement).toBeInTheDocument();
 });
