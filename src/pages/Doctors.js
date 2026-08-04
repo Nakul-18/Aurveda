@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const API = 'http://localhost:5000/api';
 
@@ -90,6 +91,7 @@ const specializations = ["All", "Panchakarma Specialist", "Ayurvedic Physician",
 const emojis = ["👩‍⚕️", "👨‍⚕️", "👩‍⚕️", "👨‍⚕️", "👩‍⚕️", "👨‍⚕️"];
 
 function Doctors() {
+  const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -117,6 +119,7 @@ function Doctors() {
     setLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchDoctors(); }, [selectedSpec, availableOnly]);
 
   const filtered = doctors.filter(d =>
@@ -202,7 +205,7 @@ function Doctors() {
                       </div>
                       <button
                         className={`book-btn ${doctor.available ? 'avail' : 'unavail'}`}
-                        onClick={() => doctor.available && (window.location.href = `/booking?doctor=${doctor.id}&name=${encodeURIComponent(doctor.name)}&fee=${doctor.fee}`)}
+                        onClick={() => doctor.available && navigate(`/booking?doctor=${doctor.id}&name=${encodeURIComponent(doctor.name)}&fee=${doctor.fee}`)}
                       >
                         {doctor.available ? '📅 Book Consultation' : 'Not Available'}
                       </button>
