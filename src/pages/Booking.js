@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const API = 'http://localhost:5000/api';
 const timeSlots = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM'];
@@ -76,6 +77,8 @@ const CSS = `
 `;
 
 function Booking() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedSlot, setSelectedSlot] = useState('');
   const [consultType, setConsultType] = useState('video');
@@ -86,10 +89,9 @@ function Booking() {
   const [bookingId, setBookingId] = useState(null);
 
   const token = localStorage.getItem('arogyamed_token');
-  const user = JSON.parse(localStorage.getItem('arogyamed_user') || 'null');
 
   // Get doctor info from URL params
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(location.search);
   const doctorId = params.get('doctor') || 1;
   const doctorName = params.get('name') || 'Dr. Priya Sharma';
   const doctorFee = params.get('fee') || 500;
@@ -145,14 +147,14 @@ function Booking() {
             <p className="success-desc">Your appointment has been successfully saved to database.</p>
             <div className="booking-id">📋 Booking ID: #{bookingId}</div>
             <div className="success-btns">
-              <button className="success-btn success-btn-p" onClick={() => window.location.href = '/dashboard'}>View Dashboard</button>
+              <button className="success-btn success-btn-p" onClick={() => navigate('/dashboard')}>View Dashboard</button>
               <button className="success-btn success-btn-s" onClick={() => setBooked(false)}>Close</button>
             </div>
           </div>
         </div>
       )}
 
-      <button className="back-btn" onClick={() => window.location.href = '/doctors'}>← Back to Doctors</button>
+      <button className="back-btn" onClick={() => navigate('/doctors')}>← Back to Doctors</button>
       <div className="page-title">Book Appointment</div>
       <div className="page-sub">Schedule your consultation in minutes</div>
 
@@ -160,7 +162,7 @@ function Booking() {
         <div className="not-logged">
           <div className="not-logged-title">🔐 Login Required</div>
           <div className="not-logged-sub">You need to login to book a consultation</div>
-          <button className="login-redirect-btn" onClick={() => window.location.href = '/login'}>Login Now →</button>
+          <button className="login-redirect-btn" onClick={() => navigate('/login')}>Login Now →</button>
         </div>
       )}
 
