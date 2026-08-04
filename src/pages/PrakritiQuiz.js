@@ -107,6 +107,12 @@ const CSS = `
   }
 `;
 
+export const getPrakriti = (scores) => {
+  if (scores.vata >= scores.pitta && scores.vata >= scores.kapha) return 'vata';
+  if (scores.pitta >= scores.vata && scores.pitta >= scores.kapha) return 'pitta';
+  return 'kapha';
+};
+
 function PrakritiQuiz() {
   const [current, setCurrent] = useState(0);
   const [scores, setScores] = useState({ vata: 0, pitta: 0, kapha: 0 });
@@ -158,12 +164,6 @@ function PrakritiQuiz() {
     }
   };
 
-  const getPrakriti = (s = scores) => {
-    if (s.vata >= s.pitta && s.vata >= s.kapha) return 'vata';
-    if (s.pitta >= s.vata && s.pitta >= s.kapha) return 'pitta';
-    return 'kapha';
-  };
-
   const retake = () => {
     setCurrent(0);
     setScores({ vata: 0, pitta: 0, kapha: 0 });
@@ -173,7 +173,7 @@ function PrakritiQuiz() {
   };
 
   if (finished) {
-    const prakriti = getPrakriti();
+    const prakriti = getPrakriti(scores);
     const info = doshas[prakriti];
     const total = questions.length;
 
