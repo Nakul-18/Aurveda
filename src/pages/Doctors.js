@@ -189,22 +189,17 @@ function Doctors() {
                     </div>
                     <div className="card-body">
                       <div className="doc-details">
-                        <div className="detail-box">
-                          <div className="detail-label">Experience</div>
-                          <div className="detail-value">{doctor.experience}</div>
-                        </div>
-                        <div className="detail-box">
-                          <div className="detail-label">Languages</div>
-                          <div className="detail-value">{doctor.language}</div>
-                        </div>
-                        <div className="detail-box">
-                          <div className="detail-label">Rating</div>
-                          <div className="detail-value">⭐ {doctor.rating}</div>
-                        </div>
-                        <div className="detail-box">
-                          <div className="detail-label">Fee</div>
-                          <div className="detail-value">₹{doctor.fee}</div>
-                        </div>
+                        {[
+                          { label: 'Experience', value: doctor.experience },
+                          { label: 'Languages', value: doctor.language },
+                          { label: 'Rating', value: `⭐ ${doctor.rating}` },
+                          { label: 'Fee', value: `₹${doctor.fee}` },
+                        ].map((item, i) => (
+                          <div key={i} className="detail-box">
+                            <div className="detail-label">{item.label}</div>
+                            <div className="detail-value">{item.value}</div>
+                          </div>
+                        ))}
                       </div>
                       <button
                         className={`book-btn ${doctor.available ? 'avail' : 'unavail'}`}
