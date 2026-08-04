@@ -57,16 +57,24 @@ const CSS = `
 `;
 
 function SymptomChecker() {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(new Set());
   const [results, setResults] = useState(null);
 
   const toggle = (s) => {
-    setSelected(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(s)) {
+        next.delete(s);
+      } else {
+        next.add(s);
+      }
+      return next;
+    });
     setResults(null);
   };
 
   const check = () => {
-    setResults(selected.map(s => ({ symptom: s, ...remedies[s] })));
+    setResults(Array.from(selected).map(s => ({ symptom: s, ...remedies[s] })));
   };
 
   return (
@@ -82,13 +90,13 @@ function SymptomChecker() {
         <div className="section-sub">Choose one or more symptoms you are experiencing</div>
         <div className="symptoms-grid">
           {symptoms.map(s => (
-            <button key={s} className={`symptom-btn ${selected.includes(s) ? 'selected' : ''}`} onClick={() => toggle(s)}>
-              {selected.includes(s) ? '✓ ' : ''}{s}
+            <button key={s} className={`symptom-btn ${selected.has(s) ? 'selected' : ''}`} onClick={() => toggle(s)}>
+              {selected.has(s) ? '✓ ' : ''}{s}
             </button>
           ))}
         </div>
-        <button className="check-btn" onClick={check} disabled={selected.length === 0}>
-          {selected.length === 0 ? 'Select at least one symptom' : `Check Remedies for ${selected.length} symptom${selected.length > 1 ? 's' : ''} →`}
+        <button className="check-btn" onClick={check} disabled={selected.size === 0}>
+          {selected.size === 0 ? 'Select at least one symptom' : `Check Remedies for ${selected.size} symptom${selected.size > 1 ? 's' : ''} →`}
         </button>
         {results && (
           <div className="results">
