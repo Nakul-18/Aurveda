@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const API = 'http://localhost:5000/api';
 
@@ -97,7 +97,7 @@ function Doctors() {
   const [selectedSpec, setSelectedSpec] = useState('All');
   const [availableOnly, setAvailableOnly] = useState(false);
 
-  const fetchDoctors = async () => {
+  const fetchDoctors = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -115,9 +115,9 @@ function Doctors() {
       setError('Cannot connect to server. Make sure backend is running on port 5000!');
     }
     setLoading(false);
-  };
+  }, [selectedSpec, availableOnly]);
 
-  useEffect(() => { fetchDoctors(); }, [selectedSpec, availableOnly]);
+  useEffect(() => { fetchDoctors(); }, [fetchDoctors]);
 
   const filtered = doctors.filter(d =>
     d.name.toLowerCase().includes(search.toLowerCase()) ||
