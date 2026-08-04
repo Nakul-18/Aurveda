@@ -80,6 +80,13 @@ const CSS = `
   }
 `;
 
+const STATS_DATA = [
+  { n: "50+", l: "Classes" },
+  { n: "25", l: "Instructors" },
+  { n: "8000+", l: "Students" },
+  { n: "4.9⭐", l: "Rating" }
+];
+
 function Yoga() {
   const [selectedCat, setSelectedCat] = useState('All');
   const [selectedLevel, setSelectedLevel] = useState('All Levels');
@@ -103,7 +110,7 @@ function Yoga() {
           <button className="btn-outline" onClick={() => window.location.href='/yoga-progress'}>📊 My Progress</button>
         </div>
         <div className="stats-row">
-          {[{ n: "50+", l: "Classes" }, { n: "25", l: "Instructors" }, { n: "8000+", l: "Students" }, { n: "4.9⭐", l: "Rating" }].map((s, i) => (
+          {STATS_DATA.map((s, i) => (
             <div key={i}><div className="stat-num">{s.n}</div><div className="stat-label">{s.l}</div></div>
           ))}
         </div>
