@@ -119,6 +119,7 @@ function Doctors() {
     setLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchDoctors(); }, [selectedSpec, availableOnly]);
 
   const filtered = doctors.filter(d =>
