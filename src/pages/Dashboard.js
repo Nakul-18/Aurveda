@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react';
+import OverviewTab from '../components/dashboard/OverviewTab';
+import AppointmentsTab from '../components/dashboard/AppointmentsTab';
+import PrakritiTab from '../components/dashboard/PrakritiTab';
+import ProfileTab from '../components/dashboard/ProfileTab';
 
 const API = 'http://localhost:5000/api';
 
@@ -108,6 +112,7 @@ function Dashboard() {
       fetchBookings();
       fetchPrakriti();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const fetchBookings = async () => {
@@ -143,9 +148,6 @@ function Dashboard() {
     localStorage.removeItem('arogyamed_user');
     window.location.href = '/login';
   };
-
-  const upcomingCount = bookings.filter(b => b.status === 'upcoming').length;
-  const completedCount = bookings.filter(b => b.status === 'completed').length;
 
   if (!token || !user) {
     return (
@@ -187,190 +189,16 @@ function Dashboard() {
 
       <div className="dash-main">
         {activeTab === 'overview' && (
-          <>
-            <div className="dash-greeting">Good Morning, {user.name?.split(' ')[0]} 👋</div>
-            <div className="dash-date">{new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
-
-            <div className="stats-row">
-              {[
-                { icon: "📅", value: bookings.length, label: "Total Consultations", color: "#E8650A" },
-                { icon: "🟢", value: upcomingCount, label: "Upcoming", color: "#22c55e" },
-                { icon: "✅", value: completedCount, label: "Completed", color: "#C9973A" },
-                { icon: "🌿", value: prakriti ? prakriti.result : "N/A", label: "Prakriti Type", color: "#2D6A4F" },
-              ].map((stat, i) => (
-                <div key={i} className="stat-card">
-                  <div className="stat-icon">{stat.icon}</div>
-                  <div className="stat-value" style={{ color: stat.color }}>{stat.value}</div>
-                  <div className="stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="two-col">
-              <div className="dash-card">
-                <div className="section-title">
-                  Recent Appointments
-                  <span className="live-badge"><span className="live-dot"/>Live</span>
-                </div>
-                {loadingBookings ? (
-                  <div className="loading-wrap"><div className="spinner"/>Loading...</div>
-                ) : bookings.length === 0 ? (
-                  <div className="empty-state">
-                    <span className="empty-emoji-s">📅</span>
-                    No appointments yet
-                    <br/>
-                    <button className="book-now-btn" style={{ marginTop: '12px' }} onClick={() => window.location.href = '/doctors'}>Book Now →</button>
-                  </div>
-                ) : (
-                  bookings.slice(0, 4).map((apt, i) => (
-                    <div key={i} className="apt-item">
-                      <div className="apt-emoji">👩‍⚕️</div>
-                      <div>
-                        <div className="apt-name">{apt.doctor_name}</div>
-                        <div className="apt-meta">{apt.date} • {apt.time_slot} • {apt.consultation_type}</div>
-                      </div>
-                      <span className={`apt-status status-${apt.status}`}>
-                        {apt.status === 'upcoming' ? '🟢 Upcoming' : apt.status === 'completed' ? '✅ Done' : '❌ Cancelled'}
-                      </span>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <div className="dash-card">
-                <div className="section-title">Quick Actions</div>
-                {[
-                  { icon: '🩺', label: 'Book Consultation', url: '/doctors' },
-                  { icon: '🌿', label: 'Take Prakriti Quiz', url: '/prakriti-quiz' },
-                  { icon: '🧘', label: 'Join Yoga Session', url: '/yoga-session' },
-                  { icon: '💊', label: 'Medicine Reminder', url: '/medicine-reminder' },
-                  { icon: '🔍', label: 'Check Symptoms', url: '/symptom-checker' },
-                  { icon: '🥗', label: 'View Diet Plan', url: '/diet-plan' },
-                ].map((action, i) => (
-                  <div key={i} className="apt-item" style={{ cursor: 'pointer' }} onClick={() => window.location.href = action.url}>
-                    <div className="apt-emoji">{action.icon}</div>
-                    <div className="apt-name">{action.label}</div>
-                    <span style={{ color: '#E8650A', marginLeft: 'auto' }}>→</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
+          <OverviewTab user={user} bookings={bookings} loadingBookings={loadingBookings} prakriti={prakriti} />
         )}
-
         {activeTab === 'appointments' && (
-          <>
-            <div className="dash-greeting">My Appointments</div>
-            <div className="dash-date">All your consultations from database</div>
-            <div className="dash-card" style={{ marginTop: '24px' }}>
-              {loadingBookings ? (
-                <div className="loading-wrap"><div className="spinner"/>Loading from database...</div>
-              ) : bookings.length === 0 ? (
-                <div className="empty-state">
-                  <span className="empty-emoji-s">📅</span>
-                  No appointments yet. Book your first consultation!
-                  <br/>
-                  <button className="book-now-btn" style={{ marginTop: '12px' }} onClick={() => window.location.href = '/doctors'}>Book Now →</button>
-                </div>
-              ) : (
-                bookings.map((apt, i) => (
-                  <div key={i} className="apt-item">
-                    <div className="apt-emoji">👩‍⚕️</div>
-                    <div>
-                      <div className="apt-name">{apt.doctor_name}</div>
-                      <div className="apt-meta">{apt.specialization} • {apt.date} • {apt.time_slot} • {apt.consultation_type}</div>
-                    </div>
-                    <span className={`apt-status status-${apt.status}`}>
-                      {apt.status === 'upcoming' ? '🟢 Upcoming' : apt.status === 'completed' ? '✅ Done' : '❌ Cancelled'}
-                    </span>
-                  </div>
-                ))
-              )}
-            </div>
-          </>
+          <AppointmentsTab bookings={bookings} loadingBookings={loadingBookings} />
         )}
-
         {activeTab === 'prakriti' && (
-          <>
-            <div className="dash-greeting">My Prakriti</div>
-            <div className="dash-date">Your Ayurvedic body type analysis</div>
-            {loadingPrakriti ? (
-              <div className="loading-wrap" style={{ marginTop: '24px' }}><div className="spinner"/>Loading prakriti data...</div>
-            ) : !prakriti ? (
-              <div className="dash-card" style={{ marginTop: '24px', textAlign: 'center', padding: '60px' }}>
-                <div style={{ fontSize: '64px', marginBottom: '20px' }}>🌿</div>
-                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '24px', color: '#FDF6EC', marginBottom: '12px' }}>No Prakriti Result Yet</div>
-                <div style={{ color: 'rgba(255,255,255,.3)', marginBottom: '24px' }}>Take the Prakriti quiz to discover your Ayurvedic body type</div>
-                <button className="book-now-btn" onClick={() => window.location.href = '/prakriti-quiz'}>Take Prakriti Quiz →</button>
-              </div>
-            ) : (
-              <div className="prakriti-card">
-                <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                  <div style={{ fontSize: '80px', marginBottom: '16px' }}>
-                    {prakriti.result === 'vata' ? '🌬️' : prakriti.result === 'pitta' ? '🔥' : '💧'}
-                  </div>
-                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '36px', fontWeight: '900', color: '#E8650A', marginBottom: '8px', textTransform: 'capitalize' }}>
-                    {prakriti.result} Prakriti
-                  </div>
-                </div>
-                <div className="prakriti-grid">
-                  {[
-                    { emoji: '🌬️', name: 'Vata', score: prakriti.vata_score, color: '#E8650A' },
-                    { emoji: '🔥', name: 'Pitta', score: prakriti.pitta_score, color: '#C9973A' },
-                    { emoji: '💧', name: 'Kapha', score: prakriti.kapha_score, color: '#2D6A4F' },
-                  ].map((dosha, i) => {
-                    const total = prakriti.vata_score + prakriti.pitta_score + prakriti.kapha_score;
-                    const percent = Math.round((dosha.score / total) * 100);
-                    return (
-                      <div key={i} className="dosha-card">
-                        <div className="dosha-emoji">{dosha.emoji}</div>
-                        <div className="dosha-name" style={{ color: dosha.color }}>{dosha.name}</div>
-                        <div className="dosha-bar">
-                          <div className="dosha-fill" style={{ width: `${percent}%`, background: dosha.color }} />
-                        </div>
-                        <div className="dosha-percent" style={{ color: dosha.color }}>{percent}%</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </>
+          <PrakritiTab prakriti={prakriti} loadingPrakriti={loadingPrakriti} />
         )}
-
         {activeTab === 'profile' && (
-          <>
-            <div className="dash-greeting">My Profile</div>
-            <div className="dash-date">Your account information</div>
-            <div className="dash-card" style={{ marginTop: '24px', maxWidth: '500px' }}>
-              <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '32px' }}>
-                <div style={{ width: '80px', height: '80px', background: '#E8650A', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', color: 'white', fontWeight: '700' }}>
-                  {user.name ? user.name[0].toUpperCase() : 'U'}
-                </div>
-                <div>
-                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '24px', color: '#FDF6EC', fontWeight: '700' }}>{user.name}</div>
-                  <div style={{ color: '#22c55e', fontSize: '13px', marginTop: '4px' }}>✅ Verified Patient</div>
-                </div>
-              </div>
-              {[
-                { label: 'Full Name', value: user.name, icon: '👤' },
-                { label: 'Email Address', value: user.email, icon: '📧' },
-                { label: 'Phone Number', value: user.phone, icon: '📱' },
-                { label: 'Member Since', value: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long' }), icon: '📅' },
-              ].map((field, i) => (
-                <div key={i} className="apt-item">
-                  <div style={{ fontSize: '20px' }}>{field.icon}</div>
-                  <div>
-                    <div style={{ color: 'rgba(255,255,255,.3)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>{field.label}</div>
-                    <div style={{ color: '#FDF6EC', fontSize: '15px', fontWeight: '600' }}>{field.value}</div>
-                  </div>
-                </div>
-              ))}
-              <button onClick={handleLogout} style={{ width: '100%', marginTop: '20px', padding: '14px', background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.2)', color: '#ef4444', borderRadius: '12px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Poppins, sans-serif' }}>
-                🚪 Logout
-              </button>
-            </div>
-          </>
+          <ProfileTab user={user} handleLogout={handleLogout} />
         )}
       </div>
     </div>
