@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const vaidyas = [
   { id: 1, name: "Vaidya Rajesh Sharma", spec: "Panchakarma Expert", exp: "20 years", lang: ["Hindi", "English"], dosha: "Vata", fee: 600, rating: 4.9, reviews: 445, emoji: "👨‍⚕️", available: true, desc: "Specialist in traditional Panchakarma therapies and Vata disorders" },
@@ -83,6 +84,7 @@ const CSS = `
 `;
 
 function Vaidya() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [selectedSpec, setSelectedSpec] = useState('All');
   const [selectedDosha, setSelectedDosha] = useState('All Doshas');
@@ -159,7 +161,7 @@ function Vaidya() {
                 <div className="lang-tags">
                   {v.lang.map((l, i) => <span key={i} className="lang-tag">🗣️ {l}</span>)}
                 </div>
-                <button className={`book-btn ${v.available ? 'btn-avail' : 'btn-unavail'}`} onClick={() => v.available && (window.location.href='/booking')}>
+                <button className={`book-btn ${v.available ? 'btn-avail' : 'btn-unavail'}`} onClick={() => v.available && navigate('/booking')}>
                   {v.available ? '📅 Book Consultation' : 'Not Available'}
                 </button>
               </div>
