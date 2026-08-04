@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 
 const weekData = [
   { day: 'Mon', minutes: 45, done: true },
