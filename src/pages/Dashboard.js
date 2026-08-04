@@ -104,39 +104,39 @@ function Dashboard() {
   ];
 
   useEffect(() => {
+    const fetchBookings = async () => {
+      setLoadingBookings(true);
+      try {
+        const res = await fetch(`${API}/booking/my`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (data.success) setBookings(data.bookings);
+      } catch (err) {
+        console.error("Failed to load bookings");
+      }
+      setLoadingBookings(false);
+    };
+
+    const fetchPrakriti = async () => {
+      setLoadingPrakriti(true);
+      try {
+        const res = await fetch(`${API}/prakriti/my`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (data.success) setPrakriti(data.prakriti);
+      } catch (err) {
+        console.error('Failed to load prakriti');
+      }
+      setLoadingPrakriti(false);
+    };
+
     if (token) {
       fetchBookings();
       fetchPrakriti();
     }
   }, [token]);
-
-  const fetchBookings = async () => {
-    setLoadingBookings(true);
-    try {
-      const res = await fetch(`${API}/booking/my`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (data.success) setBookings(data.bookings);
-    } catch (err) {
-      console.error('Failed to fetch bookings');
-    }
-    setLoadingBookings(false);
-  };
-
-  const fetchPrakriti = async () => {
-    setLoadingPrakriti(true);
-    try {
-      const res = await fetch(`${API}/prakriti/my`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (data.success) setPrakriti(data.prakriti);
-    } catch (err) {
-      console.error('Failed to fetch prakriti');
-    }
-    setLoadingPrakriti(false);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('arogyamed_token');
