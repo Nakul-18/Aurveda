@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
 import Login from './pages/Login';
 import Doctors from './pages/Doctors';
 import Booking from './pages/Booking';
@@ -303,6 +303,7 @@ const quickLinks = [
 ];
 
 function Home() {
+  const navigate = useNavigate();
   const [scroll, setScroll] = useState(0);
   const [lang, setLang] = useState('en');
   const [langOpen, setLangOpen] = useState(false);
@@ -319,15 +320,15 @@ function Home() {
 
     {/* NAVBAR */}
     <nav className="nav" style={{boxShadow:scroll>40?'0 4px 30px rgba(0,0,0,.4)':'none'}}>
-      <div className="nav-logo" onClick={()=>window.location.href='/'}>Ārogya<span>Med</span></div>
+      <div className="nav-logo" onClick={()=>navigate('/')}>Ārogya<span>Med</span></div>
       <div className="nav-links">
-        <a className="nav-a" href="/doctors">{t.nav.doctors}</a>
-        <a className="nav-a" href="/prakriti-quiz">{t.nav.ayurveda}</a>
-        <a className="nav-a" href="/yoga">{t.nav.yoga}</a>
-        <a className="nav-a" href="/wellness">{t.nav.wellness}</a>
-        <a className="nav-a" href="/herbal-market">{t.nav.shop}</a>
-        <a className="nav-a" href="/dashboard">{t.nav.dashboard}</a>
-        <button className="nav-cta" onClick={()=>window.location.href='/login'}>{t.nav.getStarted}</button>
+        <Link className="nav-a" to="/doctors">{t.nav.doctors}</Link>
+        <Link className="nav-a" to="/prakriti-quiz">{t.nav.ayurveda}</Link>
+        <Link className="nav-a" to="/yoga">{t.nav.yoga}</Link>
+        <Link className="nav-a" to="/wellness">{t.nav.wellness}</Link>
+        <Link className="nav-a" to="/herbal-market">{t.nav.shop}</Link>
+        <Link className="nav-a" to="/dashboard">{t.nav.dashboard}</Link>
+        <button className="nav-cta" onClick={()=>navigate('/login')}>{t.nav.getStarted}</button>
       </div>
     </nav>
 
@@ -344,8 +345,8 @@ function Home() {
         </h1>
         <p className="hero-sub">{t.hero.sub}</p>
         <div className="hero-btns">
-          <button className="btn-p" onClick={()=>window.location.href='/doctors'}>{t.hero.btn1}</button>
-          <button className="btn-o" onClick={()=>window.location.href='/prakriti-quiz'}>{t.hero.btn2}</button>
+          <button className="btn-p" onClick={()=>navigate('/doctors')}>{t.hero.btn1}</button>
+          <button className="btn-o" onClick={()=>navigate('/prakriti-quiz')}>{t.hero.btn2}</button>
         </div>
         <div className="hero-numbers">
           {t.stats.map(([n,l],i)=>(
@@ -367,7 +368,7 @@ function Home() {
     {/* QUICK ACCESS */}
     <div className="quick-access">
       {quickLinks.map((q,i)=>(
-        <button key={i} className="qa-btn" onClick={()=>window.location.href=q.url}>{q.label}</button>
+        <button key={i} className="qa-btn" onClick={()=>navigate(q.url)}>{q.label}</button>
       ))}
     </div>
 
@@ -394,7 +395,7 @@ function Home() {
       <div className="s-sub">Click any module to explore — all 12 modules built and ready to use.</div>
       <div className="s-grid">
         {services.map((s,i)=>(
-          <div key={i} className="s-item" onClick={()=>window.location.href=s.url}>
+          <div key={i} className="s-item" onClick={()=>navigate(s.url)}>
             <div className="s-num">{s.n}</div>
             <span className="s-icon">{s.i}</span>
             <div className="s-name">{s.name}</div>
@@ -466,7 +467,7 @@ function Home() {
               <div className="d-name">{d.name}</div>
               <div className="d-spec">{d.spec}</div>
               <div className="d-rating">{d.rating}</div>
-              <button className="d-btn" onClick={()=>window.location.href='/booking'}>Book Consultation</button>
+              <button className="d-btn" onClick={()=>navigate('/booking')}>Book Consultation</button>
             </div>
           </div>
         ))}
@@ -478,7 +479,7 @@ function Home() {
       <div className="cta-eyebrow">{t.cta.eyebrow}</div>
       <h2 className="cta-title">{t.cta.title} <em>{t.cta.em}</em><br/>{t.cta.sub2}</h2>
       <p className="cta-sub">{t.cta.desc}</p>
-      <button className="cta-btn" onClick={()=>window.location.href='/login'}>{t.cta.btn}</button>
+      <button className="cta-btn" onClick={()=>navigate('/login')}>{t.cta.btn}</button>
     </section>
 
     {/* FOOTER */}
@@ -486,7 +487,7 @@ function Home() {
       <div className="f-logo">Ārogya<span>Med</span></div>
       <div className="f-links">
         {[{label:"Doctors",url:"/doctors"},{label:"Ayurveda",url:"/prakriti-quiz"},{label:"Yoga",url:"/yoga"},{label:"Wellness",url:"/wellness"},{label:"Shop",url:"/herbal-market"},{label:"Presentation",url:"/presentation"}].map((l,i)=>(
-          <span key={i} className="f-link" onClick={()=>window.location.href=l.url}>{l.label}</span>
+          <span key={i} className="f-link" onClick={()=>navigate(l.url)}>{l.label}</span>
         ))}
       </div>
       <div className="f-text">{t.footer}</div>
