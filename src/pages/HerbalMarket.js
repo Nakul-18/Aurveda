@@ -116,6 +116,8 @@ function HerbalMarket() {
     return `badge-${map[badge] || ''}`;
   };
 
+  const addedItemsSet = new Set(addedItems);
+
   return (
     <div className="market-page">
       <style>{CSS}</style>
@@ -160,8 +162,8 @@ function HerbalMarket() {
                     <span className="price-current">₹{product.price}</span>
                     <span className="price-original">₹{product.originalPrice}</span>
                   </div>
-                  <button className={`add-btn ${addedItems.includes(product.id) ? 'added' : 'normal'}`} onClick={() => addToCart(product)}>
-                    {addedItems.includes(product.id) ? '✓ Added!' : '+ Add'}
+                  <button className={`add-btn ${addedItemsSet.has(product.id) ? 'added' : 'normal'}`} onClick={() => addToCart(product)}>
+                    {addedItemsSet.has(product.id) ? '✓ Added!' : '+ Add'}
                   </button>
                 </div>
               </div>
