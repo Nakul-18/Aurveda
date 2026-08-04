@@ -117,7 +117,10 @@ function Doctors() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchDoctors(); }, [selectedSpec, availableOnly]);
+  useEffect(() => {
+    fetchDoctors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSpec, availableOnly]);
 
   const filtered = doctors.filter(d =>
     d.name.toLowerCase().includes(search.toLowerCase()) ||
