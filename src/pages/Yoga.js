@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const classes = [
   { id: 1, name: "Surya Namaskar", emoji: "🌅", level: "Beginner", duration: "30 min", instructor: "Yogi Priya", rating: 4.9, students: 1240, category: "Morning", color: "#E8650A", desc: "Start your day with the classic 12-pose sun salutation for full body activation." },
@@ -83,6 +84,7 @@ const CSS = `
 function Yoga() {
   const [selectedCat, setSelectedCat] = useState('All');
   const [selectedLevel, setSelectedLevel] = useState('All Levels');
+  const navigate = useNavigate();
 
   const filtered = classes.filter(c => {
     const matchCat = selectedCat === 'All' || c.category === selectedCat;
@@ -99,8 +101,8 @@ function Yoga() {
         <h1 className="hero-title">Find Your<span>Inner Balance</span></h1>
         <p className="hero-sub">Join live and on-demand yoga classes with certified instructors for complete mind-body wellness</p>
         <div className="hero-btns">
-          <button className="btn-primary" onClick={() => window.location.href='/yoga-session'}>📅 Book Live Session</button>
-          <button className="btn-outline" onClick={() => window.location.href='/yoga-progress'}>📊 My Progress</button>
+          <button className="btn-primary" onClick={() => navigate('/yoga-session')}>📅 Book Live Session</button>
+          <button className="btn-outline" onClick={() => navigate('/yoga-progress')}>📊 My Progress</button>
         </div>
         <div className="stats-row">
           {[{ n: "50+", l: "Classes" }, { n: "25", l: "Instructors" }, { n: "8000+", l: "Students" }, { n: "4.9⭐", l: "Rating" }].map((s, i) => (
@@ -145,7 +147,7 @@ function Yoga() {
                 </div>
                 <div className="class-footer">
                   <span className="class-rating">⭐ {cls.rating}</span>
-                  <button className="join-btn" style={{ background: cls.color }} onClick={() => window.location.href='/yoga-session'}>Join Class →</button>
+                  <button className="join-btn" style={{ background: cls.color }} onClick={() => navigate('/yoga-session')}>Join Class →</button>
                 </div>
               </div>
             </div>
