@@ -101,9 +101,7 @@ function Doctors() {
     setLoading(true);
     setError(null);
     try {
-      let url = `${API}/doctors?`;
-      if (selectedSpec !== 'All') url += `specialization=${selectedSpec}&`;
-      if (availableOnly) url += `available=true&`;
+      let url = `${API}/doctors`;
       const res = await fetch(url);
       const data = await res.json();
       if (data.success) {
@@ -117,12 +115,14 @@ function Doctors() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchDoctors(); }, [selectedSpec, availableOnly]);
+  useEffect(() => { fetchDoctors(); }, []);
 
-  const filtered = doctors.filter(d =>
-    d.name.toLowerCase().includes(search.toLowerCase()) ||
-    d.specialization.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = doctors.filter(d => {
+    const matchSearch = d.name.toLowerCase().includes(search.toLowerCase()) || d.spec.toLowerCase().includes(search.toLowerCase());
+    const matchSpec = selectedSpec === 'All' || d.spec === selectedSpec;
+    const matchAvail = availableOnly ? d.available : true;
+    return matchSearch && matchSpec && matchAvail;
+  });
 
   return (
     <div className="doctors-page">
@@ -180,7 +180,7 @@ function Doctors() {
                       <div className="doc-emoji">{emojis[index % emojis.length]}</div>
                       <div className="doc-info">
                         <div className="doc-name">{doctor.name}</div>
-                        <div className="doc-spec">{doctor.specialization}</div>
+                        <div className="doc-spec">{doctor.spec}</div>
                         <span className={`doc-status ${doctor.available ? 'status-on' : 'status-off'}`}>
                           {doctor.available ? '🟢 Available' : '🔴 Unavailable'}
                         </span>
