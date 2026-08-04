@@ -45,7 +45,7 @@ const CSS = `
   @media(max-width:768px){.hero{padding:50px 24px 80px}.hero-title{font-size:36px}.main{padding:32px 24px}.inputs-grid{grid-template-columns:1fr}.advice-grid{grid-template-columns:1fr}}
 `;
 
-const getBMIInfo = (bmi) => {
+export const getBMIInfo = (bmi) => {
   if (bmi < 18.5) return { category: "Underweight", color: "#3b82f6", position: 8, dosha: "Vata imbalance likely", advice: "Focus on nourishing, warm foods. Take Ashwagandha and Shatavari.", tips: ["Eat more warm, heavy foods", "Take Chyawanprash daily", "Practice gentle yoga", "Sleep 8+ hours"] };
   if (bmi < 25) return { category: "Normal Weight", color: "#22c55e", position: 35, dosha: "Doshas are balanced", advice: "Maintain your current lifestyle. Continue Ayurvedic practices.", tips: ["Maintain current diet", "Stay active with yoga", "Seasonal Panchakarma", "Regular Prakriti checkup"] };
   if (bmi < 30) return { category: "Overweight", color: "#f59e0b", position: 62, dosha: "Kapha imbalance likely", advice: "Reduce heavy foods. Take Triphala and Guggul. Increase activity.", tips: ["Eat light, warm foods", "Take Triphala at night", "Daily brisk walking", "Avoid dairy and sweets"] };

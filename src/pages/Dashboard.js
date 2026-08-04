@@ -104,10 +104,13 @@ function Dashboard() {
   ];
 
   useEffect(() => {
-    if (token) {
-      fetchBookings();
-      fetchPrakriti();
-    }
+    const loadData = async () => {
+      if (token) {
+        await Promise.all([fetchBookings(), fetchPrakriti()]);
+      }
+    };
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const fetchBookings = async () => {
