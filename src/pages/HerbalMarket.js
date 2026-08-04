@@ -1,14 +1,21 @@
 import { useState } from 'react';
 
 const products = [
-  { id: 1, name: "Ashwagandha Root Powder", category: "Stress & Sleep", price: 299, originalPrice: 399, rating: 4.8, reviews: 234, emoji: "🌿", badge: "Bestseller", desc: "Premium quality Ashwagandha for stress relief and better sleep" },
-  { id: 2, name: "Triphala Churna", category: "Digestion", price: 199, originalPrice: 249, rating: 4.7, reviews: 189, emoji: "🍃", badge: "Popular", desc: "Ancient Ayurvedic blend for digestive health and detox" },
-  { id: 3, name: "Brahmi Capsules", category: "Brain & Memory", price: 349, originalPrice: 449, rating: 4.9, reviews: 312, emoji: "🧠", badge: "Top Rated", desc: "Boost memory, focus and cognitive function naturally" },
-  { id: 4, name: "Neem Tablets", category: "Skin & Blood", price: 149, originalPrice: 199, rating: 4.6, reviews: 156, emoji: "🌱", badge: null, desc: "Purify blood and improve skin health with pure Neem" },
-  { id: 5, name: "Turmeric + Black Pepper", category: "Immunity", price: 249, originalPrice: 299, rating: 4.8, reviews: 278, emoji: "🟡", badge: "New", desc: "Golden immunity booster with enhanced absorption" },
-  { id: 6, name: "Chyawanprash", category: "Immunity", price: 399, originalPrice: 499, rating: 4.9, reviews: 445, emoji: "🫙", badge: "Bestseller", desc: "Classic Ayurvedic jam packed with 40+ herbs" },
-  { id: 7, name: "Shatavari Powder", category: "Women Health", price: 299, originalPrice: 379, rating: 4.7, reviews: 198, emoji: "🌸", badge: "Popular", desc: "Natural support for women's hormonal balance" },
-  { id: 8, name: "Giloy Juice", category: "Immunity", price: 179, originalPrice: 229, rating: 4.6, reviews: 167, emoji: "🍀", badge: null, desc: "Powerful immunity booster and fever reducer" },
+  { id: 1, name: "अश्वगंधा मुळाची पावडर", category: "तणाव व झोप", price: 299, originalPrice: 399, rating: 4.8, reviews: 234, emoji: "🌿", badge: "सर्वाधिक विक्री", desc: "तणाव कमी करण्यासाठी आणि चांगल्या झोपेसाठी उत्कृष्ट दर्जाची अश्वगंधा" },
+
+  { id: 2, name: "त्रिफळा चूर्ण", category: "पचन", price: 199, originalPrice: 249, rating: 4.7, reviews: 189, emoji: "🍃", badge: "लोकप्रिय", desc: "पचन सुधारण्यासाठी आणि शरीर शुद्धीकरणासाठी पारंपरिक आयुर्वेदिक मिश्रण" },
+
+  { id: 3, name: "ब्राह्मी कॅप्सूल", category: "मेंदू व स्मरणशक्ती", price: 349, originalPrice: 449, rating: 4.9, reviews: 312, emoji: "🧠", badge: "उच्च दर्जा", desc: "स्मरणशक्ती, एकाग्रता आणि मेंदूची कार्यक्षमता नैसर्गिकरित्या वाढवा" },
+
+  { id: 4, name: "कडुनिंब गोळ्या", category: "त्वचा व रक्त", price: 149, originalPrice: 199, rating: 4.6, reviews: 156, emoji: "🌱", badge: null, desc: "शुद्ध कडुनिंबामुळे रक्तशुद्धी आणि त्वचेचे आरोग्य सुधारते" },
+
+  { id: 5, name: "हळद + काळी मिरी", category: "रोगप्रतिकारक शक्ती", price: 249, originalPrice: 299, rating: 4.8, reviews: 278, emoji: "🟡", badge: "नवीन", desc: "उत्तम शोषणासह सुवर्ण रोगप्रतिकारक शक्ती वाढवणारे मिश्रण" },
+
+  { id: 6, name: "च्यवनप्राश", category: "रोगप्रतिकारक शक्ती", price: 399, originalPrice: 499, rating: 4.9, reviews: 445, emoji: "🫙", badge: "सर्वाधिक विक्री", desc: "४० हून अधिक औषधी वनस्पतींनी समृद्ध पारंपरिक आयुर्वेदिक च्यवनप्राश" },
+
+  { id: 7, name: "शतावरी पावडर", category: "महिला आरोग्य", price: 299, originalPrice: 379, rating: 4.7, reviews: 198, emoji: "🌸", badge: "लोकप्रिय", desc: "महिलांच्या हार्मोनल संतुलनासाठी नैसर्गिक सहाय्य" },
+
+  { id: 8, name: "गिलोय रस", category: "रोगप्रतिकारक शक्ती", price: 179, originalPrice: 229, rating: 4.6, reviews: 167, emoji: "🍀", badge: null, desc: "रोगप्रतिकारक शक्ती वाढवणारा आणि ताप कमी करण्यास मदत करणारा गिलोय रस" },
 ];
 
 const categories = ["All", "Immunity", "Digestion", "Brain & Memory", "Stress & Sleep", "Skin & Blood", "Women Health"];
