@@ -108,7 +108,8 @@ function Dashboard() {
       fetchBookings();
       fetchPrakriti();
     }
-  }, [token]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchBookings = async () => {
     setLoadingBookings(true);
