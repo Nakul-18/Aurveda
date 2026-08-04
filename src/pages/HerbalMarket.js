@@ -112,7 +112,12 @@ function HerbalMarket() {
 
   const getBadgeClass = (badge) => {
     if (!badge) return '';
-    const map = { 'Bestseller': 'bestseller', 'Popular': 'popular', 'New': 'new', 'Top Rated': 'toprated' };
+    const map = {
+      'Bestseller': 'bestseller', 'सर्वाधिक विक्री': 'bestseller',
+      'Popular': 'popular', 'लोकप्रिय': 'popular',
+      'New': 'new', 'नवीन': 'new',
+      'Top Rated': 'toprated', 'उच्च दर्जा': 'toprated'
+    };
     return `badge-${map[badge] || ''}`;
   };
 
