@@ -5,10 +5,13 @@ describe('MedicineReminder', () => {
   it('toggles the taken status of a medicine when the check button is clicked', () => {
     render(<MedicineReminder />);
 
-    // Use getAllByText as the text appears multiple times (main list + next reminder)
-    const medicineNames = screen.getAllByText('Triphala Churna');
-    const medicineName = medicineNames[0]; // The first one is in the main list
+    // Find the specific card containing the medicine
+    // We can target the card by text, then scope our queries to it
+    const medicineName = screen.getAllByText('Triphala Churna')[0]; // Main list
+
+    // eslint-disable-next-line testing-library/no-node-access
     const medicineCard = medicineName.closest('.med-card');
+    // eslint-disable-next-line testing-library/no-node-access
     const checkBtn = medicineCard.querySelector('.check-btn');
 
     expect(checkBtn).not.toHaveClass('checked');
