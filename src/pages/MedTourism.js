@@ -70,9 +70,10 @@ function MedTourism() {
   const [people, setPeople] = useState('');
   const [estimate, setEstimate] = useState(null);
 
+  const searchLower = search.toLowerCase();
   const filtered = hospitals.filter(h =>
-    h.name.toLowerCase().includes(search.toLowerCase()) ||
-    h.city.toLowerCase().includes(search.toLowerCase())
+    h.name.toLowerCase().includes(searchLower) ||
+    h.city.toLowerCase().includes(searchLower)
   );
 
   const calculateCost = () => {
