@@ -18,7 +18,7 @@ const products = [
   { id: 8, name: "गिलोय रस", category: "रोगप्रतिकारक शक्ती", price: 179, originalPrice: 229, rating: 4.6, reviews: 167, emoji: "🍀", badge: null, desc: "रोगप्रतिकारक शक्ती वाढवणारा आणि ताप कमी करण्यास मदत करणारा गिलोय रस" },
 ];
 
-const categories = ["All", "Immunity", "Digestion", "Brain & Memory", "Stress & Sleep", "Skin & Blood", "Women Health"];
+const categories = ["All", "रोगप्रतिकारक शक्ती", "पचन", "मेंदू व स्मरणशक्ती", "तणाव व झोप", "त्वचा व रक्त", "महिला आरोग्य"];
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
