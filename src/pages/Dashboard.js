@@ -103,13 +103,6 @@ function Dashboard() {
     { id: 'profile', icon: '👤', label: 'Profile' },
   ];
 
-  useEffect(() => {
-    if (token) {
-      fetchBookings();
-      fetchPrakriti();
-    }
-  }, [token]);
-
   const fetchBookings = async () => {
     setLoadingBookings(true);
     try {
@@ -137,6 +130,14 @@ function Dashboard() {
     }
     setLoadingPrakriti(false);
   };
+
+  useEffect(() => {
+    if (token) {
+      fetchBookings();
+      fetchPrakriti();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const handleLogout = () => {
     localStorage.removeItem('arogyamed_token');
