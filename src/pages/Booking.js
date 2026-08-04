@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const API = 'http://localhost:5000/api';
 const timeSlots = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM'];
@@ -86,7 +86,6 @@ function Booking() {
   const [bookingId, setBookingId] = useState(null);
 
   const token = localStorage.getItem('arogyamed_token');
-  const user = JSON.parse(localStorage.getItem('arogyamed_user') || 'null');
 
   // Get doctor info from URL params
   const params = new URLSearchParams(window.location.search);
