@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import Doctors from './Doctors';
 
 // Mock react-router-dom as mentioned in guidelines
@@ -57,6 +57,8 @@ describe('Doctors Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Dr. Ayurveda')).toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(screen.getByText('Dr. Yoga')).toBeInTheDocument();
     });
 
@@ -106,6 +108,8 @@ describe('Doctors Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Dr. Ayurveda')).toBeInTheDocument();
+    });
+    await waitFor(() => {
       expect(screen.getByText('Dr. Yoga')).toBeInTheDocument();
     });
 
