@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const API = 'http://localhost:5000/api';
 
@@ -103,14 +103,7 @@ function Dashboard() {
     { id: 'profile', icon: '👤', label: 'Profile' },
   ];
 
-  useEffect(() => {
-    if (token) {
-      fetchBookings();
-      fetchPrakriti();
-    }
-  }, [token]);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     setLoadingBookings(true);
     try {
       const res = await fetch(`${API}/booking/my`, {
@@ -119,12 +112,12 @@ function Dashboard() {
       const data = await res.json();
       if (data.success) setBookings(data.bookings);
     } catch (err) {
-      console.error('Failed to fetch bookings');
+      console.error(err);
     }
     setLoadingBookings(false);
-  };
+  }, [token]);
 
-  const fetchPrakriti = async () => {
+  const fetchPrakriti = useCallback(async () => {
     setLoadingPrakriti(true);
     try {
       const res = await fetch(`${API}/prakriti/my`, {
@@ -133,10 +126,17 @@ function Dashboard() {
       const data = await res.json();
       if (data.success) setPrakriti(data.prakriti);
     } catch (err) {
-      console.error('Failed to fetch prakriti');
+      console.error(err);
     }
     setLoadingPrakriti(false);
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchBookings();
+      fetchPrakriti();
+    }
+  }, [token, fetchBookings, fetchPrakriti]);
 
   const handleLogout = () => {
     localStorage.removeItem('arogyamed_token');
