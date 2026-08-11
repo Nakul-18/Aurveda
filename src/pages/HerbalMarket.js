@@ -98,8 +98,9 @@ function HerbalMarket() {
   const [cart, setCart] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
 
+  const lowerSearch = search.toLowerCase();
   const filtered = products.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = p.name.toLowerCase().includes(lowerSearch);
     const matchCat = selectedCat === 'All' || p.category === selectedCat;
     return matchSearch && matchCat;
   });
