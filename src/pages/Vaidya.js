@@ -88,8 +88,9 @@ function Vaidya() {
   const [selectedDosha, setSelectedDosha] = useState('All Doshas');
   const [availableOnly, setAvailableOnly] = useState(false);
 
+  const searchLower = search.toLowerCase();
   const filtered = vaidyas.filter(v => {
-    const matchSearch = v.name.toLowerCase().includes(search.toLowerCase()) || v.spec.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = v.name.toLowerCase().includes(searchLower) || v.spec.toLowerCase().includes(searchLower);
     const matchSpec = selectedSpec === 'All' || v.spec === selectedSpec;
     const matchDosha = selectedDosha === 'All Doshas' || v.dosha === selectedDosha;
     const matchAvail = availableOnly ? v.available : true;
