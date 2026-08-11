@@ -91,9 +91,10 @@ export default function Homeopathy() {
   const [search, setSearch] = useState('');
   const [booked, setBooked] = useState(null);
 
+  const searchLower = search.toLowerCase();
   const filtered = doctors.filter(d => {
     const matchSpec = spec === 'All' || d.spec === spec;
-    const matchSearch = d.name.toLowerCase().includes(search.toLowerCase()) || d.spec.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = d.name.toLowerCase().includes(searchLower) || d.spec.toLowerCase().includes(searchLower);
     return matchSpec && matchSearch;
   });
 
